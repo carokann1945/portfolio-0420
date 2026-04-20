@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import IntroLoader from '@/features/intro/components/IntroLoader';
-import { IntroLoadingProvider } from '@/features/intro/IntroLoadingContext';
+import { IntroLoadingProvider } from '@/features/intro/components/IntroLoadingContext';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',

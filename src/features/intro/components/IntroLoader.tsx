@@ -3,18 +3,32 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
-import { useIntroLoading } from '@/features/intro/IntroLoadingContext';
+import { useIntroLoading } from '@/features/intro/components/IntroLoadingContext';
+import { cn } from '@/shared/style/utils';
 
 type Phase = 'loading' | 'cover' | 'fade' | 'done';
 
 const MAX_PENDING_PROGRESS = 99;
 const PRE_READY_PROGRESS_MS = 700;
 const FINAL_PROGRESS_MS = 220;
-const HOLD_MS = 100; // 100%에서 잠깐 멈춤
-const COVER_MS = 700; // 노란 화면이 왼쪽에서 오른쪽으로 덮는 시간
-const FADE_MS = 650; // 노란 화면이 투명해지는 시간
-const YELLOW_HOLD_MS = 300; //노란 화면이 덮은 이후 투명해지기 전 잠깐 멈출 시간
+const HOLD_MS = 100;
+const COVER_MS = 700;
+const FADE_MS = 650;
+const YELLOW_HOLD_MS = 300;
 const REDUCED_MOTION_FADE_MS = 180;
+
+const TASKS = [
+  'Next.js',
+  'React components',
+  'TypeScript',
+  'Responsive UI',
+  'Project cards',
+  'Motion details',
+  'Accessibility check',
+];
+
+const pad2 = (n: number) => String(n).padStart(2, '0');
+const pad3 = (n: number) => String(n).padStart(3, '0');
 
 export default function IntroLoader() {
   const [progress, setProgress] = useState(0);
@@ -35,11 +49,10 @@ export default function IntroLoader() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  // 로딩 중에는 스크롤 잠금
+  // Lock scroll during loading
   useEffect(() => {
     previousOverflow.current = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-
     return () => {
       document.body.style.overflow = previousOverflow.current;
     };
@@ -48,7 +61,6 @@ export default function IntroLoader() {
   const shouldFinishLoading = (isReady || isTimedOut) && progressCompleted;
   const completedCount = Math.max(0, totalCount - pendingCount);
 
-  // 준비 전에는 94%까지만 자연스럽게 차고, 준비되면 100%로 마무리
   useEffect(() => {
     if (phase !== 'loading' || shouldReduceMotion) return;
 
@@ -62,9 +74,7 @@ export default function IntroLoader() {
     };
 
     const tick = (now: number) => {
-      if (startedAtRef.current === null) {
-        startedAtRef.current = now;
-      }
+      if (startedAtRef.current === null) startedAtRef.current = now;
 
       if (shouldFinishLoading) {
         if (finishStartedAtRef.current === null) {
@@ -72,8 +82,8 @@ export default function IntroLoader() {
           finishStartProgressRef.current = progressRef.current;
         }
 
-        const elapsed = now - finishStartedAtRef.current;
-        const amount = Math.min(1, elapsed / FINAL_PROGRESS_MS);
+        const e = now - finishStartedAtRef.current;
+        const amount = Math.min(1, e / FINAL_PROGRESS_MS);
         const easedAmount = 1 - Math.pow(1 - amount, 3);
         const nextProgress = finishStartProgressRef.current + (100 - finishStartProgressRef.current) * easedAmount;
 
@@ -83,14 +93,13 @@ export default function IntroLoader() {
           holdTimer = window.setTimeout(() => {
             setPhase('cover');
           }, HOLD_MS);
-
           return;
         }
       } else {
         finishStartedAtRef.current = null;
 
-        const elapsed = now - startedAtRef.current;
-        const timeProgress = Math.min(MAX_PENDING_PROGRESS, (elapsed / PRE_READY_PROGRESS_MS) * MAX_PENDING_PROGRESS);
+        const e = now - startedAtRef.current;
+        const timeProgress = Math.min(MAX_PENDING_PROGRESS, (e / PRE_READY_PROGRESS_MS) * MAX_PENDING_PROGRESS);
         const taskProgress = totalCount > 0 ? (completedCount / totalCount) * MAX_PENDING_PROGRESS : 0;
         const targetProgress = Math.min(MAX_PENDING_PROGRESS, Math.max(timeProgress, taskProgress));
         const nextProgress = progressRef.current + (targetProgress - progressRef.current) * 0.12;
@@ -109,7 +118,6 @@ export default function IntroLoader() {
     };
   }, [completedCount, phase, shouldFinishLoading, shouldReduceMotion, totalCount]);
 
-  // 움직임 최소화 환경에서는 실제 준비 상태만 기다리고 긴 진행 애니메이션은 생략
   useEffect(() => {
     if (!shouldReduceMotion || phase !== 'loading' || !shouldFinishLoading) return;
 
@@ -120,7 +128,6 @@ export default function IntroLoader() {
     return () => window.clearTimeout(timer);
   }, [phase, shouldFinishLoading, shouldReduceMotion]);
 
-  // 노란 화면이 위로 덮고
   useEffect(() => {
     if (phase !== 'cover') return;
 
@@ -131,16 +138,10 @@ export default function IntroLoader() {
     return () => window.clearTimeout(timer);
   }, [phase]);
 
-  // 투명해지며 종료
   useEffect(() => {
     if (phase !== 'fade') return;
 
-    const timer = window.setTimeout(
-      () => {
-        setPhase('done');
-      },
-      shouldReduceMotion ? REDUCED_MOTION_FADE_MS : FADE_MS,
-    );
+    const timer = window.setTimeout(() => setPhase('done'), shouldReduceMotion ? REDUCED_MOTION_FADE_MS : FADE_MS);
 
     return () => window.clearTimeout(timer);
   }, [phase, shouldReduceMotion]);
@@ -157,77 +158,109 @@ export default function IntroLoader() {
   const showYellowLayer = phase === 'cover' || phase === 'fade';
   const visualProgress = shouldReduceMotion ? (shouldFinishLoading ? 100 : MAX_PENDING_PROGRESS) : progress;
   const displayProgress = Math.round(visualProgress);
-  const progressLabelLeft = `clamp(3rem, ${visualProgress}%, calc(100% - 3rem))`;
+  const completedTasks = Math.min(TASKS.length, Math.floor((visualProgress / 100) * TASKS.length));
+  const activeIdx = Math.min(TASKS.length - 1, completedTasks);
+
+  const uiFade = {
+    animate: { opacity: showLoadingUI ? 1 : 0 },
+    transition: { duration: shouldReduceMotion ? 0.1 : 0.3, ease: 'easeOut' as const },
+  };
 
   return (
-    <div className="fixed inset-0 z-[9999] overflow-hidden">
-      {/* 검은 배경 */}
-      <motion.div
-        className="absolute inset-0 z-0 bg-black"
-        animate={{ opacity: phase === 'fade' ? 0 : 1 }}
-        transition={{
-          duration: phase === 'fade' ? 0 : shouldReduceMotion ? 0.1 : 0.35,
-          ease: 'easeOut',
-        }}
+    <div
+      className={cn(
+        'fixed inset-0 z-[9999] overflow-hidden text-white',
+        phase === 'fade' ? 'bg-transparent' : 'bg-[#0a0a0a]',
+      )}>
+      {/* 12-column grid lines */}
+      <div
+        className={cn(
+          'pointer-events-none absolute inset-0',
+          'bg-[linear-gradient(to_right,rgba(255,255,255,.04)_1px,transparent_1px)]',
+          'bg-[length:calc(100%/12)_100%]',
+        )}
       />
 
-      {/* 타이틀 */}
+      {/* Top bar */}
       <motion.div
-        className="absolute inset-0 z-10"
-        animate={{
-          opacity: showLoadingUI ? 1 : 0,
-          y: showLoadingUI ? 0 : 16,
-        }}
-        transition={{
-          duration: shouldReduceMotion ? 0.1 : 0.24,
-          ease: 'easeOut',
-        }}>
-        <div className="absolute top-[30%] left-1/2 w-full max-w-[calc(100vw_-_48px)] -translate-x-1/2 -translate-y-1/2 text-center text-[32px] font-semibold text-white sm:text-[40px]">
-          윤동주 포트폴리오
-        </div>
+        {...uiFade}
+        className={cn(
+          'absolute top-0 right-0 left-0 z-10 flex items-center justify-between',
+          'px-7 py-5 font-mono text-[12px] tracking-[0.08em] text-white/55',
+        )}>
+        <span>YDJ — PORTFOLIO / 2026</span>
       </motion.div>
 
-      {/* 진행 바 + 숫자 */}
-      <motion.div
-        className="absolute inset-0 z-20"
-        animate={{
-          opacity: showLoadingUI ? 1 : 0,
-          y: showLoadingUI ? 0 : 16,
-        }}
-        transition={{
-          duration: shouldReduceMotion ? 0.1 : 0.24,
-          ease: 'easeOut',
-        }}>
-        <div className="absolute top-[64%] left-1/2 w-[min(880px,calc(100vw_-_48px))] -translate-x-1/2 -translate-y-1/2">
-          <div className="relative pb-10">
-            <div className="h-[26px] overflow-hidden">
-              <div
-                className="h-full origin-left bg-accent will-change-transform"
-                style={{
-                  transform: `scaleX(${visualProgress / 100})`,
-                }}
-              />
-            </div>
-
-            <div
-              className="absolute top-[42px] -translate-x-1/2 text-center text-[36px] text-accent tabular-nums will-change-[left]"
-              style={{
-                left: progressLabelLeft,
-              }}>
-              {displayProgress}%
-            </div>
+      {/* Big type — left-anchored, vertically centred */}
+      <motion.div {...uiFade} className={cn('absolute top-1/2 left-[6%] z-10 max-w-[88%] -translate-y-1/2')}>
+        <div className={cn('text-[clamp(44px,9vw,156px)]', 'leading-[0.9] font-semibold tracking-[-0.04em]')}>
+          <div className={cn('whitespace-nowrap')}>윤동주</div>
+          <div className={cn('whitespace-nowrap text-accent')}>
+            포트폴리오<span className={cn('text-white')}>.</span>
           </div>
         </div>
+        <div
+          className={cn(
+            'mt-10 flex flex-wrap gap-x-8 gap-y-1',
+            'font-mono text-[13px] tracking-[0.04em] text-white/60',
+          )}>
+          <span>FRONTEND&nbsp;ENGINEER</span>
+          <span>INTERACTION · MOTION</span>
+          <span>SINCE. 2026</span>
+        </div>
       </motion.div>
 
-      {/* 노란 화면: 왼쪽 -> 오른쪽 */}
+      {/* Task console — bottom right */}
       <motion.div
-        className="absolute inset-0 z-30 bg-accent"
+        {...uiFade}
+        className={cn('absolute right-7 bottom-24 z-10 w-[260px] font-mono text-[12px] leading-[1.9]')}>
+        {TASKS.map((task, i) => {
+          const done = i < completedTasks;
+          const active = i === activeIdx && !done;
+          return (
+            <div
+              key={task}
+              className={cn(
+                'flex justify-between',
+                done && 'text-accent',
+                active && 'text-white',
+                !done && !active && 'text-white/35',
+              )}>
+              <span>
+                {pad2(i + 1)} · {task}
+              </span>
+              <span>{done ? 'OK' : active ? '...' : '—'}</span>
+            </div>
+          );
+        })}
+      </motion.div>
+
+      {/* Progress bar — pinned to bottom */}
+      <motion.div {...uiFade} className={cn('absolute right-7 bottom-7 left-7 z-10')}>
+        <div className={cn('mb-3 flex items-baseline justify-between', 'font-mono text-[12px] text-white/55')}>
+          <span>LOADING</span>
+          <span className={cn('text-[24px] text-white tabular-nums')}>
+            <span className={cn('text-accent')}>{pad3(displayProgress)}</span>
+            <span className={cn('text-white/35')}> / 100</span>
+          </span>
+        </div>
+        <div className={cn('relative h-[2px] overflow-hidden bg-white/[0.12]')}>
+          <motion.div
+            className={cn('absolute inset-y-0 left-0 w-full origin-left bg-accent')}
+            initial={false}
+            animate={{ scaleX: visualProgress / 100 }}
+            transition={{ duration: 0 }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Yellow cover: sweeps left → right, then fades */}
+      <motion.div
+        className={cn(
+          'absolute inset-0 z-30 bg-accent',
+          'will-change-[transform,opacity] [backface-visibility:hidden]',
+        )}
         initial={{ x: '-100%' }}
-        style={{
-          backfaceVisibility: 'hidden',
-          willChange: 'transform, opacity',
-        }}
         animate={{
           x: showYellowLayer ? '0%' : '-100%',
           opacity: phase === 'fade' ? 0 : 1,
