@@ -9,6 +9,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-pretendard: var(--font-pretendard);
+  --color-accent: #e6f700;
 }
 
 @media (prefers-color-scheme: dark) {

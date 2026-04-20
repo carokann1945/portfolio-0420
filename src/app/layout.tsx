@@ -3,6 +3,9 @@ import './globals.css';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
+import IntroLoader from '@/features/intro/components/IntroLoader';
+import { IntroLoadingProvider } from '@/features/intro/IntroLoadingContext';
+
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
   variable: '--font-pretendard',
@@ -20,7 +23,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable} antialiased`}>
-      <body>{children}</body>
+      <body>
+        <IntroLoadingProvider>
+          <IntroLoader />
+          {children}
+        </IntroLoadingProvider>
+      </body>
     </html>
   );
 }
