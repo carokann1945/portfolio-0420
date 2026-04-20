@@ -213,7 +213,10 @@ export default function IntroLoader() {
       {/* Task console — bottom right */}
       <motion.div
         {...uiFade}
-        className={cn('absolute right-7 bottom-24 z-10 w-[260px] font-mono text-[12px] leading-[1.9]')}>
+        className={cn(
+          'absolute right-7 bottom-24 z-10 w-[260px] font-mono text-[12px] leading-[1.9]',
+          '[@media(max-height:700px)]:hidden',
+        )}>
         {TASKS.map((task, i) => {
           const done = i < completedTasks;
           const active = i === activeIdx && !done;
