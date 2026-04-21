@@ -17,15 +17,7 @@ const FADE_MS = 650;
 const YELLOW_HOLD_MS = 300;
 const REDUCED_MOTION_FADE_MS = 180;
 
-const TASKS = [
-  'Next.js',
-  'React components',
-  'TypeScript',
-  'Responsive UI',
-  'Project cards',
-  'Motion details',
-  'Accessibility check',
-];
+const TASKS = ['Home', 'Projects', 'About', 'Contact'];
 
 const pad2 = (n: number) => String(n).padStart(2, '0');
 const pad3 = (n: number) => String(n).padStart(3, '0');
@@ -170,7 +162,7 @@ export default function IntroLoader() {
     <div
       className={cn(
         'fixed inset-0 z-[9999] overflow-hidden text-white',
-        phase === 'fade' ? 'bg-transparent' : 'bg-[#0a0a0a]',
+        phase === 'fade' ? 'bg-transparent' : 'bg-[#151718]',
       )}>
       {/* 12-column grid lines */}
       <div
