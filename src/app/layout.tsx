@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${pretendard.variable} antialiased`}>
+    <html lang="ko" className={`${pretendard.variable} scroll-smooth antialiased`}>
       <body>
         <IntroLoadingProvider>
           <Navigation />

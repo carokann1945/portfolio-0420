@@ -1,9 +1,15 @@
-import { cn } from '@/shared/style/utils';
+import About from '@/features/about/components/About';
+import Contact from '@/features/contact/components/Contact';
+import Hero from '@/features/hero/components/Hero';
+import Projects from '@/features/projects/components/Projects';
 
 export default function Home() {
   return (
     <div>
-      <h1 className={cn('text-2xl font-bold')}></h1>
+      <Hero />
+      <Projects />
+      <About />
+      <Contact />
     </div>
   );
 }

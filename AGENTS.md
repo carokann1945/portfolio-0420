@@ -14,3 +14,7 @@ Use `pnpm` for all package management commands. Do not use `npm` or `yarn`.
 
 Use Tailwind CSS for styling.
 Prefer the `cn` utility for composing `className` values instead of manual string concatenation.
+
+## Development rules
+
+작업 완료 후 개발 서버 실행은 생략하세요.

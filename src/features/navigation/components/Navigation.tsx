@@ -2,7 +2,7 @@
 
 import { Code, ContactRound, House, MailMinus, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { cn } from '@/shared/style/utils';
 
@@ -10,18 +10,77 @@ import { NavigationLogo } from './NavigationLogo';
 import { NavigationLogoDesktop } from './NavigationLogoDesktop';
 
 const NAV_ITEMS = [
-  { label: '홈', href: '#home', Icon: House },
-  { label: '프로젝트', href: '#projects', Icon: Code },
-  { label: '소개', href: '#about', Icon: ContactRound },
-  { label: '연락하기', href: '#contact', Icon: MailMinus },
-];
+  { id: 'home', label: '홈', href: '#home', Icon: House },
+  { id: 'projects', label: '프로젝트', href: '#projects', Icon: Code },
+  { id: 'about', label: '소개', href: '#about', Icon: ContactRound },
+  { id: 'contact', label: '연락하기', href: '#contact', Icon: MailMinus },
+] as const;
+
+type NavSectionId = (typeof NAV_ITEMS)[number]['id'];
+
+const isSectionAtViewportCenter = (section: HTMLElement) => {
+  const viewportCenter = window.innerHeight / 2;
+  const rect = section.getBoundingClientRect();
+
+  return rect.top <= viewportCenter && rect.bottom >= viewportCenter;
+};
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMd, setIsMd] = useState(false);
+  const [activeSectionId, setActiveSectionId] = useState<NavSectionId>('home');
   const [openLogoLeft, setOpenLogoLeft] = useState(70);
   const ulRef = useRef<HTMLUListElement>(null);
+  const clickedSectionIdRef = useRef<NavSectionId | null>(null);
+  const clickedSectionFrameRef = useRef<number | null>(null);
+  const clickedSectionTimeoutRef = useRef<number | null>(null);
   const closedLogoHeight = isMd ? 52 : 40;
+
+  const clearClickedSectionLock = () => {
+    if (clickedSectionFrameRef.current !== null) {
+      window.cancelAnimationFrame(clickedSectionFrameRef.current);
+      clickedSectionFrameRef.current = null;
+    }
+
+    if (clickedSectionTimeoutRef.current !== null) {
+      window.clearTimeout(clickedSectionTimeoutRef.current);
+      clickedSectionTimeoutRef.current = null;
+    }
+
+    clickedSectionIdRef.current = null;
+  };
+
+  const keepClickedSectionActive = (id: NavSectionId) => {
+    clearClickedSectionLock();
+    clickedSectionIdRef.current = id;
+
+    const unlock = () => {
+      if (clickedSectionIdRef.current !== id) return;
+
+      clearClickedSectionLock();
+    };
+
+    const waitUntilTargetSettled = () => {
+      if (clickedSectionIdRef.current !== id) return;
+
+      const targetSection = document.getElementById(id);
+
+      if (!targetSection || isSectionAtViewportCenter(targetSection)) {
+        unlock();
+        return;
+      }
+
+      clickedSectionFrameRef.current = window.requestAnimationFrame(waitUntilTargetSettled);
+    };
+
+    clickedSectionTimeoutRef.current = window.setTimeout(unlock, 1200);
+    clickedSectionFrameRef.current = window.requestAnimationFrame(waitUntilTargetSettled);
+  };
+
+  const handleDesktopNavClick = (id: NavSectionId) => {
+    setActiveSectionId(id);
+    keepClickedSectionActive(id);
+  };
 
   // 로고 반응형
   useLayoutEffect(() => {
@@ -57,6 +116,55 @@ export default function Navigation() {
     return () => window.removeEventListener('resize', updateOpenLogoLeft);
   }, [isOpen]);
 
+  // select
+  useEffect(() => {
+    const sections = NAV_ITEMS.map(({ id }) => document.getElementById(id)).filter(
+      (section): section is HTMLElement => section instanceof HTMLElement,
+    );
+
+    if (sections.length === 0) return;
+
+    const updateActiveSection = () => {
+      if (clickedSectionIdRef.current) return;
+
+      const viewportCenter = window.innerHeight / 2;
+      const centeredSection = sections.find((section) => {
+        const rect = section.getBoundingClientRect();
+
+        return rect.top <= viewportCenter && rect.bottom >= viewportCenter;
+      });
+
+      if (centeredSection) {
+        setActiveSectionId(centeredSection.id as NavSectionId);
+        return;
+      }
+
+      const closestSection = sections.reduce((closest, section) => {
+        const closestDistance = Math.abs(closest.getBoundingClientRect().top - viewportCenter);
+        const sectionDistance = Math.abs(section.getBoundingClientRect().top - viewportCenter);
+
+        return sectionDistance < closestDistance ? section : closest;
+      });
+
+      setActiveSectionId(closestSection.id as NavSectionId);
+    };
+
+    const observer = new IntersectionObserver(updateActiveSection, {
+      rootMargin: '-45% 0px -45% 0px',
+      threshold: 0,
+    });
+
+    sections.forEach((section) => observer.observe(section));
+    updateActiveSection();
+    window.addEventListener('resize', updateActiveSection);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateActiveSection);
+      clearClickedSectionLock();
+    };
+  }, []);
+
   return (
     <>
       <nav
@@ -70,14 +178,16 @@ export default function Navigation() {
         </div>
 
         <ul className="mt-15 flex w-[300px] flex-col gap-2">
-          {NAV_ITEMS.map(({ label, href, Icon }, index) => {
-            const isActive = index === 0;
+          {NAV_ITEMS.map(({ id, label, href, Icon }) => {
+            const isActive = activeSectionId === id;
 
             return (
               <li key={label}>
                 <a
                   href={href}
                   aria-label={label}
+                  aria-current={isActive ? 'location' : undefined}
+                  onClick={() => handleDesktopNavClick(id)}
                   className={cn(
                     'group/a relative flex h-16 w-23 items-center text-[#171717] transition-all duration-150 group-hover/sidebar:w-full hover:bg-[#efefef]',
                     isActive && 'bg-[#efefef]',
@@ -167,20 +277,36 @@ export default function Navigation() {
               )}
             />
             <ul ref={ulRef} className="relative z-10 flex flex-col items-center gap-2 md:gap-3">
-              {NAV_ITEMS.map(({ label, href, Icon }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    onClick={() => setIsOpen(false)}
-                    className="group flex min-w-[337px] items-center gap-3 bg-[#f2f2f2] px-4 py-3 text-lg font-semibold transition-colors hover:bg-accent md:min-w-[530px] md:py-5">
-                    <Icon className="size-[26px] shrink-0 text-gray-400 group-hover:text-black md:size-[36px]" />
-                    <div className={cn('flex w-full items-center justify-between', 'text-[16px] md:text-[24px]')}>
-                      <span>| {label}</span>
-                      <span>&gt;</span>
-                    </div>
-                  </a>
-                </li>
-              ))}
+              {NAV_ITEMS.map(({ id, label, href, Icon }) => {
+                const isActive = activeSectionId === id;
+
+                return (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      aria-current={isActive ? 'location' : undefined}
+                      onClick={() => {
+                        setActiveSectionId(id);
+                        setIsOpen(false);
+                      }}
+                      className={cn(
+                        'group flex min-w-[337px] items-center gap-3 px-4 py-3 text-lg font-semibold transition-colors md:min-w-[530px] md:py-5',
+                        isActive ? 'bg-accent text-black' : 'bg-[#f2f2f2] hover:bg-accent',
+                      )}>
+                      <Icon
+                        className={cn(
+                          'size-[26px] shrink-0 transition-colors md:size-[36px]',
+                          isActive ? 'text-black' : 'text-gray-400 group-hover:text-black',
+                        )}
+                      />
+                      <div className={cn('flex w-full items-center justify-between', 'text-[16px] md:text-[24px]')}>
+                        <span>| {label}</span>
+                        <span>&gt;</span>
+                      </div>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           </motion.nav>
         )}
