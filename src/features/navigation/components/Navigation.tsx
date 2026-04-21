@@ -6,7 +6,8 @@ import { useLayoutEffect, useRef, useState } from 'react';
 
 import { cn } from '@/shared/style/utils';
 
-import { NavigationLogo } from './navigation-logo';
+import { NavigationLogo } from './NavigationLogo';
+import { NavigationLogoDesktop } from './NavigationLogoDesktop';
 
 const NAV_ITEMS = [
   { label: '홈', href: '#home', Icon: House },
@@ -58,8 +59,55 @@ export default function Navigation() {
 
   return (
     <>
+      <nav
+        aria-label="데스크톱 사이드바"
+        className={cn(
+          'group/sidebar fixed top-0 left-0 z-[60] hidden h-dvh w-26 flex-col overflow-hidden bg-white text-[#171717] shadow-[8px_0_32px_rgba(0,0,0,0.08)]',
+          'transition-[width] duration-200 ease-out hover:w-[316px] xl:flex',
+        )}>
+        <div className="shrink-0 items-center justify-center pt-2 pl-3">
+          <NavigationLogoDesktop className="h-20" />
+        </div>
+
+        <ul className="mt-15 flex w-[300px] flex-col gap-2">
+          {NAV_ITEMS.map(({ label, href, Icon }, index) => {
+            const isActive = index === 0;
+
+            return (
+              <li key={label}>
+                <a
+                  href={href}
+                  aria-label={label}
+                  className={cn(
+                    'group/a relative flex h-16 w-23 items-center text-[#171717] transition-all duration-150 group-hover/sidebar:w-full hover:bg-[#efefef]',
+                    isActive && 'bg-[#efefef]',
+                  )}>
+                  {isActive && <span aria-hidden="true" className="absolute top-0 left-0 h-full w-3 bg-[#171717]" />}
+                  <span className="flex w-27 shrink-0 items-center justify-center">
+                    <Icon
+                      className={cn(
+                        'size-10 shrink-0 transition-all duration-150',
+                        isActive ? 'text-[#171717]' : 'text-gray-300 group-hover/a:text-gray-400',
+                      )}
+                      strokeWidth={2.2}
+                    />
+                  </span>
+                  <span
+                    className={cn(
+                      'pointer-events-none text-[16px] leading-none font-semibold whitespace-nowrap opacity-0 transition-opacity duration-150',
+                      'group-hover/sidebar:pointer-events-auto group-hover/sidebar:opacity-100',
+                    )}>
+                    {label}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+
       {/* 헤더 shadow bar — 메뉴 닫혔을 때만 */}
-      <div className="pointer-events-none fixed top-0 right-0 left-0 z-[50] h-16 shadow-[0_3px_20px_1px_rgba(0,0,0,0.15)] md:h-20" />
+      <div className="pointer-events-none fixed top-0 right-0 left-0 z-[50] h-16 shadow-[0_3px_20px_1px_rgba(0,0,0,0.15)] md:h-20 xl:hidden" />
 
       {/* 로고 — fixed z-[70], 메뉴 열리면 오른쪽+아래로 이동하며 확대 */}
       <motion.div
@@ -70,12 +118,12 @@ export default function Navigation() {
           height: isOpen ? 70 : closedLogoHeight,
         }}
         transition={{ duration: 0.2 }}
-        className="fixed z-[70] overflow-hidden">
+        className="fixed z-[70] overflow-hidden xl:hidden">
         <NavigationLogo className={cn('h-full w-auto')} />
       </motion.div>
 
       {/* 햄버거 / X 버튼 — fixed z-[70] */}
-      <div className="fixed top-5 right-5 z-[70]">
+      <div className="fixed top-5 right-5 z-[70] xl:hidden">
         <button onClick={() => setIsOpen((o) => !o)} aria-label={isOpen ? '메뉴 닫기' : '메뉴 열기'}>
           <AnimatePresence mode="wait" initial={false}>
             {isOpen ? (
@@ -109,7 +157,7 @@ export default function Navigation() {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white px-8 pt-40">
+            className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white px-8 pt-40 xl:hidden">
             {/* 격자무늬 배경 */}
             <div
               className={cn(

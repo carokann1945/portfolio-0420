@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: var(--font-pretendard);
 }
+
+@media (min-width: 80rem) {
+  body {
+    padding-left: 6.5rem;
+  }
+}

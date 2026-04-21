@@ -5,7 +5,7 @@ import localFont from 'next/font/local';
 
 import IntroLoader from '@/features/intro/components/IntroLoader';
 import { IntroLoadingProvider } from '@/features/intro/components/IntroLoadingContext';
-import Navigation from '@/features/navigation/components/navigation';
+import Navigation from '@/features/navigation/components/Navigation';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
