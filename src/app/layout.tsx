@@ -20,8 +20,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ydj-portfolio.com'),
   title: '윤동주 | 포트폴리오',
   description: '윤동주 포트폴리오',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({

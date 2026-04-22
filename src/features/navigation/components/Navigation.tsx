@@ -6,8 +6,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { cn } from '@/shared/style/utils';
 
-import { NavigationLogo } from './NavigationLogo';
-import { NavigationLogoDesktop } from './NavigationLogoDesktop';
+import { Logo } from './Logo';
 
 const NAV_ITEMS = [
   { id: 'home', label: '홈', href: '#home', Icon: House },
@@ -173,8 +172,8 @@ export default function Navigation() {
           'group/sidebar fixed top-0 left-0 z-[60] hidden h-dvh w-26 flex-col overflow-hidden bg-white text-[#171717] shadow-[8px_0_32px_rgba(0,0,0,0.08)]',
           'transition-[width] duration-200 ease-out hover:w-[316px] xl:flex',
         )}>
-        <div className="shrink-0 items-center justify-center pt-2 pl-3">
-          <NavigationLogoDesktop className="h-20" />
+        <div className="shrink-0 items-center justify-center pt-5 pl-4">
+          <Logo className="h-16" />
         </div>
 
         <ul className="mt-15 flex w-[300px] flex-col gap-2">
@@ -225,11 +224,11 @@ export default function Navigation() {
         animate={{
           top: isOpen ? 50 : 12,
           left: isOpen ? openLogoLeft : 24,
-          height: isOpen ? 70 : closedLogoHeight,
+          height: isOpen ? 100 : closedLogoHeight,
         }}
         transition={{ duration: 0.2 }}
         className="fixed z-[70] overflow-hidden xl:hidden">
-        <NavigationLogo className={cn('h-full w-auto')} />
+        <Logo className={cn('h-full w-auto')} />
       </motion.div>
 
       {/* 햄버거 / X 버튼 — fixed z-[70] */}
@@ -267,7 +266,7 @@ export default function Navigation() {
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white px-8 pt-40 xl:hidden">
+            className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-white px-8 pt-50 xl:hidden">
             {/* 격자무늬 배경 */}
             <div
               className={cn(
