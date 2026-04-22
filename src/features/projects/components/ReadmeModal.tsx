@@ -4,6 +4,7 @@ import { X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Image from 'next/image';
 import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
@@ -137,6 +138,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
   const [isOpen, setIsOpen] = useState(false);
   const [fetchState, setFetchState] = useState<FetchState>({ status: 'idle' });
   const hasFetched = useRef(false);
+  const previousBodyOverflow = useRef<string | null>(null);
   const resolvedRepo = repo ?? getRepoFromGithubHref(githubHref);
 
   const fetchReadme = useCallback(async () => {
@@ -174,6 +176,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
     if (!isOpen) return;
 
     // 배경 스크롤 잠금
+    previousBodyOverflow.current = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     // 뒤로가기 감지를 위한 히스토리 엔트리 추가
@@ -188,11 +191,81 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
     window.addEventListener('popstate', handlePopstate);
 
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = previousBodyOverflow.current ?? '';
+      previousBodyOverflow.current = null;
       window.removeEventListener('keydown', handleKeydown);
       window.removeEventListener('popstate', handlePopstate);
     };
   }, [isOpen]);
+
+  const modal =
+    typeof document === 'undefined'
+      ? null
+      : createPortal(
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                key="readme-backdrop"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setIsOpen(false)}
+                className={cn('fixed inset-0 z-[100] h-dvh overflow-y-auto', 'bg-black/30 backdrop-blur-sm')}>
+                <div className={cn('flex min-h-dvh items-start justify-center', 'px-4 py-8')}>
+                  <motion.div
+                    key="readme-panel"
+                    onClick={(e) => e.stopPropagation()}
+                    initial={{ opacity: 0, y: -24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -24 }}
+                    transition={{ duration: 0.22, ease: 'easeOut' }}
+                    className={cn(
+                      'relative w-full max-w-[800px]',
+                      'flex flex-col',
+                      'rounded-lg bg-white',
+                      'overflow-hidden shadow-xl',
+                    )}>
+                    <div
+                      className={cn(
+                        'w-full',
+                        'flex items-center justify-between',
+                        'px-5 py-4',
+                        'bg-[#222]',
+                        'shrink-0',
+                      )}>
+                      <span className={cn('font-semibold text-white')}>README.md</span>
+                      <button
+                        onClick={() => setIsOpen(false)}
+                        aria-label="Close README"
+                        className={cn(
+                          'flex items-center justify-center',
+                          'h-7 w-7 rounded-md',
+                          'text-gray-400 hover:text-gray-100',
+                          'cursor-pointer',
+                        )}>
+                        <X size={25} />
+                      </button>
+                    </div>
+
+                    <div className={cn('px-6 py-5')}>
+                      {fetchState.status === 'loading' && (
+                        <div className={cn('flex items-center justify-center py-16 text-gray-400')}>Loading…</div>
+                      )}
+                      {fetchState.status === 'error' && (
+                        <div className={cn('py-8 text-center text-sm text-red-500')}>{fetchState.message}</div>
+                      )}
+                      {fetchState.status === 'success' && (
+                        <MarkdownRenderer markdown={fetchState.markdown} baseUrl={fetchState.baseUrl} />
+                      )}
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body,
+        );
 
   return (
     <>
@@ -203,63 +276,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
         {icon ? <span aria-hidden="true">{icon}</span> : <Image src="/images/note.svg" alt="" width={18} height={18} />}
         <span>{label}</span>
       </button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            key="readme-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            onClick={() => setIsOpen(false)}
-            className={cn('fixed inset-0 z-50 overflow-y-auto', 'bg-black/30 backdrop-blur-sm')}>
-            <div className={cn('flex min-h-full items-start justify-center', 'px-4 py-8')}>
-              <motion.div
-                key="readme-panel"
-                onClick={(e) => e.stopPropagation()}
-                initial={{ opacity: 0, y: -24 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -24 }}
-                transition={{ duration: 0.22, ease: 'easeOut' }}
-                className={cn(
-                  'relative w-full max-w-[800px]',
-                  'flex flex-col',
-                  'rounded-lg bg-white',
-                  'overflow-hidden shadow-xl',
-                )}>
-                <div
-                  className={cn('w-full', 'flex items-center justify-between', 'px-5 py-4', 'bg-[#222]', 'shrink-0')}>
-                  <span className={cn('font-semibold text-white')}>README.md</span>
-                  <button
-                    onClick={() => setIsOpen(false)}
-                    aria-label="Close README"
-                    className={cn(
-                      'flex items-center justify-center',
-                      'h-7 w-7 rounded-md',
-                      'text-gray-400 hover:text-gray-100',
-                      'cursor-pointer',
-                    )}>
-                    <X size={25} />
-                  </button>
-                </div>
-
-                <div className={cn('px-6 py-5')}>
-                  {fetchState.status === 'loading' && (
-                    <div className={cn('flex items-center justify-center py-16 text-gray-400')}>Loading…</div>
-                  )}
-                  {fetchState.status === 'error' && (
-                    <div className={cn('py-8 text-center text-sm text-red-500')}>{fetchState.message}</div>
-                  )}
-                  {fetchState.status === 'success' && (
-                    <MarkdownRenderer markdown={fetchState.markdown} baseUrl={fetchState.baseUrl} />
-                  )}
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {modal}
     </>
   );
 }
