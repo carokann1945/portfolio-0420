@@ -217,7 +217,7 @@ export default function Navigation() {
       </nav>
 
       {/* 헤더 shadow bar — 메뉴 닫혔을 때만 */}
-      <div className="pointer-events-none fixed top-0 right-0 left-0 z-[50] h-16 shadow-[0_3px_20px_1px_rgba(0,0,0,0.15)] md:h-20 xl:hidden" />
+      <div className="pointer-events-none fixed top-0 right-0 left-0 z-[50] h-16 bg-white shadow-[0_3px_20px_1px_rgba(0,0,0,0.15)] md:h-20 xl:hidden" />
 
       {/* 로고 — fixed z-[70], 메뉴 열리면 오른쪽+아래로 이동하며 확대 */}
       <motion.div
