@@ -1,3 +1,4 @@
+import { GlitchText } from '@/shared/components/GlitchText';
 import { cn } from '@/shared/style/utils';
 
 import { AboutLead } from './AboutLead';
@@ -24,7 +25,8 @@ export default function About() {
         <h2
           className="mb-10 font-semibold tracking-[-0.03em] md:mb-14"
           style={{ fontSize: 'clamp(40px, 7vw, 96px)', lineHeight: 0.95 }}>
-          About<span className="text-accent">.</span>
+          <GlitchText text="About" />
+          <span className="text-accent">.</span>
         </h2>
 
         <AboutLead />

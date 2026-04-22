@@ -78,9 +78,9 @@ export function ProjectCard({ project }: { project: Project }) {
         <figure className="relative aspect-[16/10] w-full overflow-hidden bg-[#f3f4f2] ring-1 ring-black/10">
           <Image
             src={project.image.src}
-            alt={project.image.alt}
+            alt=""
             fill
-            className="object-cover"
+            className="object-cover object-top"
             sizes="(min-width: 768px) 60vw, 100vw"
           />
         </figure>

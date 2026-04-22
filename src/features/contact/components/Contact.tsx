@@ -1,3 +1,4 @@
+import { GlitchText } from '@/shared/components/GlitchText';
 import { cn } from '@/shared/style/utils';
 
 import { ContactAside } from './ContactAside';
@@ -32,9 +33,11 @@ export default function Contact() {
         <h2
           className="font-semibold tracking-[-0.03em]"
           style={{ fontSize: 'clamp(44px, 9vw, 140px)', lineHeight: 0.9 }}>
-          <span className="block">언제든</span>
           <span className="block">
-            <span className="text-accent">연락주세요</span>
+            <GlitchText text="언제든" />
+          </span>
+          <span className="block">
+            <GlitchText text="연락주세요" className="text-accent" />
             <span className="text-white">.</span>
           </span>
         </h2>

@@ -1,3 +1,4 @@
+import { GlitchText } from '@/shared/components/GlitchText';
 import { cn } from '@/shared/style/utils';
 
 import { PROJECTS } from '../data/projects';
@@ -23,7 +24,8 @@ export default function Projects() {
         <h2
           className="mb-12 font-semibold tracking-[-0.03em] md:mb-16"
           style={{ fontSize: 'clamp(40px, 7vw, 96px)', lineHeight: 0.95 }}>
-          Projects<span className="text-accent">.</span>
+          <GlitchText text="Projects" />
+          <span className="text-accent">.</span>
         </h2>
 
         <div className="flex flex-col gap-20 md:gap-28">
