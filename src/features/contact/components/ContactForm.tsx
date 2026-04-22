@@ -1,0 +1,95 @@
+'use client';
+
+import { type FormEvent, useState } from 'react';
+
+import { cn } from '@/shared/style/utils';
+
+import { CONTACT_EMAIL } from '../data/contact';
+
+type FormStatus = { message: string; tone: 'idle' | 'error' | 'info' };
+
+export function ContactForm() {
+  const [status, setStatus] = useState<FormStatus>({ message: '', tone: 'idle' });
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get('name') ?? '').trim();
+    const email = String(formData.get('email') ?? '').trim();
+    const subject = String(formData.get('subject') ?? '').trim() || '포트폴리오 문의';
+    const message = String(formData.get('message') ?? '').trim();
+
+    if (!name || !email || !message) {
+      setStatus({ message: '이름 · 이메일 · 메시지를 채워주세요.', tone: 'error' });
+      return;
+    }
+
+    const body = `이름: ${name}\n이메일: ${email}\n\n${message}`;
+    const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setStatus({ message: '메일 앱을 여는 중…', tone: 'info' });
+    window.location.href = href;
+  };
+
+  const inputCls = cn(
+    'h-12 border border-white/15 bg-white/[0.03] px-3 text-[15px] text-white placeholder-white/30',
+    'outline-none focus:border-accent',
+  );
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+      <div className="grid gap-5 md:grid-cols-2">
+        <label className="flex flex-col gap-2">
+          <span className="font-mono text-[10px] tracking-[0.24em] text-white/50">NAME</span>
+          <input name="name" type="text" required placeholder="홍길동" className={inputCls} />
+        </label>
+        <label className="flex flex-col gap-2">
+          <span className="font-mono text-[10px] tracking-[0.24em] text-white/50">EMAIL</span>
+          <input name="email" type="email" required placeholder="you@domain.com" className={inputCls} />
+        </label>
+      </div>
+
+      <label className="flex flex-col gap-2">
+        <span className="font-mono text-[10px] tracking-[0.24em] text-white/50">SUBJECT</span>
+        <input name="subject" type="text" placeholder="프로젝트 협업 제안" className={inputCls} />
+      </label>
+
+      <label className="flex flex-col gap-2">
+        <span className="font-mono text-[10px] tracking-[0.24em] text-white/50">MESSAGE</span>
+        <textarea
+          name="message"
+          rows={6}
+          required
+          placeholder="편하게 남겨주세요."
+          className={cn(
+            'resize-y border border-white/15 bg-white/[0.03] p-3 text-[15px] leading-[1.7] text-white placeholder-white/30',
+            'outline-none focus:border-accent',
+          )}
+        />
+      </label>
+
+      <div className="flex flex-wrap items-center gap-4">
+        <button
+          type="submit"
+          className={cn(
+            'inline-flex cursor-pointer items-center gap-2 bg-accent px-5 py-3 text-[14px] font-semibold text-black',
+            'transition-transform hover:-translate-y-0.5 md:text-[15px]',
+          )}>
+          메일 보내기 <span aria-hidden="true">→</span>
+        </button>
+        <span
+          role="status"
+          aria-live="polite"
+          className={cn(
+            'font-mono text-[11px] tracking-[0.14em]',
+            status.tone === 'error' ? 'text-[#ffb4b4]' : 'text-white/50',
+          )}>
+          {status.message}
+        </span>
+      </div>
+
+      <p className="font-mono text-[11px] leading-[1.7] text-white/40">
+        전송 버튼을 누르면 기본 메일 앱이 열리며, 입력한 내용이 본문에 채워집니다.
+      </p>
+    </form>
+  );
+}
