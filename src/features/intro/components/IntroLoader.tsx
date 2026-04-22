@@ -178,7 +178,7 @@ export default function IntroLoader() {
         {...uiFade}
         className={cn(
           'absolute top-0 right-0 left-0 z-10 flex items-center justify-between',
-          'px-7 py-5 font-mono text-[12px] tracking-[0.08em] text-white/55',
+          'px-7 py-5 font-jetbrains-mono text-[12px] tracking-[0.08em] text-white/55',
         )}>
         <span>YDJ — PORTFOLIO / 2026</span>
       </motion.div>
@@ -194,7 +194,7 @@ export default function IntroLoader() {
         <div
           className={cn(
             'mt-10 flex flex-wrap gap-x-8 gap-y-1',
-            'font-mono text-[13px] tracking-[0.04em] text-white/60',
+            'font-jetbrains-mono text-[13px] tracking-[0.04em] text-white/60',
           )}>
           <span>FRONTEND&nbsp;ENGINEER</span>
           <span>INTERACTION · MOTION</span>
@@ -206,7 +206,7 @@ export default function IntroLoader() {
       <motion.div
         {...uiFade}
         className={cn(
-          'absolute right-7 bottom-24 z-10 w-[260px] font-mono text-[12px] leading-[1.9]',
+          'absolute right-7 bottom-24 z-10 w-[260px] font-jetbrains-mono text-[12px] leading-[1.9]',
           '[@media(max-height:700px)]:hidden',
         )}>
         {TASKS.map((task, i) => {
@@ -232,7 +232,7 @@ export default function IntroLoader() {
 
       {/* Progress bar — pinned to bottom */}
       <motion.div {...uiFade} className={cn('absolute right-7 bottom-7 left-7 z-10')}>
-        <div className={cn('mb-3 flex items-baseline justify-between', 'font-mono text-[12px] text-white/55')}>
+        <div className={cn('mb-3 flex items-baseline justify-between', 'font-jetbrains-mono text-[12px] text-white/55')}>
           <span>LOADING</span>
           <span className={cn('text-[24px] text-white tabular-nums')}>
             <span className={cn('text-accent')}>{pad3(displayProgress)}</span>

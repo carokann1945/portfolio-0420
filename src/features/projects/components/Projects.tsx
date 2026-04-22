@@ -14,7 +14,7 @@ export default function Projects() {
       <div className="mx-auto w-full max-w-[1400px]">
         <div
           className={cn(
-            'mb-6 flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] text-black/50 md:text-[12px]',
+            'mb-6 flex items-center gap-3 font-jetbrains-mono text-[11px] tracking-[0.24em] text-black/50 md:text-[12px]',
           )}>
           <span className="h-px w-8 bg-black" />
           <span>04 · SELECTED WORK</span>

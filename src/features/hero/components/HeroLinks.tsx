@@ -45,7 +45,7 @@ export function HeroLinks() {
     <div className={cn('mt-10 md:mt-14')}>
       <div
         className={cn(
-          'mb-4 flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] text-black/55 md:text-[12px]',
+          'mb-4 flex items-center gap-3 font-jetbrains-mono text-[11px] tracking-[0.24em] text-black/55 md:text-[12px]',
         )}>
         <span className="h-px w-8 bg-black" />
         <span>03 · LINKS</span>
@@ -68,7 +68,7 @@ export function HeroLinks() {
                   {link.icon}
                 </span>
                 <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[10px] tracking-[0.24em] text-black/50 md:text-[11px]">
+                  <span className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-black/50 md:text-[11px]">
                     {link.label}
                   </span>
                   <span className="text-[17px] font-semibold tracking-tight md:text-[19px]">{link.value}</span>
@@ -76,7 +76,7 @@ export function HeroLinks() {
               </div>
               <span
                 className={cn(
-                  'font-mono text-[18px] text-black/40 transition-transform group-hover:translate-x-1 group-hover:text-black',
+                  'font-jetbrains-mono text-[18px] text-black/40 transition-transform group-hover:translate-x-1 group-hover:text-black',
                 )}
                 aria-hidden="true">
                 ↗

@@ -1,7 +1,7 @@
 export const FACTS = [
   { label: 'ROLE', value: 'Frontend Engineer' },
   { label: 'BASED', value: 'Cheongju, KR' },
-  { label: 'FOCUS', value: 'Interaction · UX' },
+  { label: 'EDGE', value: 'UX · Problem Framing' },
   { label: 'SINCE', value: '2026' },
   { label: 'SHIPPED', value: '2 live products' },
   { label: 'DAU', value: '~50 (Cernium)' },

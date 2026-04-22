@@ -25,7 +25,7 @@ export function ContactAside() {
           <div className="flex flex-col gap-2">
             <span
               className={cn(
-                'font-mono text-[10px] tracking-[0.24em] text-white/50',
+                'font-jetbrains-mono text-[10px] tracking-[0.24em] text-white/50',
                 'group-hover:text-black/60 md:text-[11px]',
               )}>
               {link.label}
@@ -35,7 +35,7 @@ export function ContactAside() {
           <span
             aria-hidden="true"
             className={cn(
-              'font-mono text-[18px] text-white/40 transition-transform',
+              'font-jetbrains-mono text-[18px] text-white/40 transition-transform',
               'group-hover:translate-x-1 group-hover:text-black',
             )}>
             ↗
@@ -44,8 +44,8 @@ export function ContactAside() {
       ))}
 
       <div className="border border-white/10 p-5 md:p-6">
-        <span className="font-mono text-[10px] tracking-[0.24em] text-white/50 md:text-[11px]">RESPONSE TIME</span>
-        <p className="mt-2 text-[15px] leading-[1.8] text-white/75">보통 24시간 이내에 답장드립니다. 평일 KST 기준.</p>
+        <span className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-white/50 md:text-[11px]">RESPONSE TIME</span>
+        <p className="mt-2 text-[15px] leading-[1.8] text-white/75">보통 24시간 이내에 답장드립니다.</p>
       </div>
     </aside>
   );

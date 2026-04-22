@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'portfolio-0420',
+  title: '윤동주 | 포트폴리오',
   description: '윤동주 포트폴리오',
 };
 

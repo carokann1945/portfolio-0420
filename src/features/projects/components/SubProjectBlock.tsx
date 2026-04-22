@@ -1,8 +1,11 @@
 import { cn } from '@/shared/style/utils';
 
 import type { SubProject } from '../data/projects';
+import { ReadmeButton } from './ReadmeModal';
 
 export function SubProjectBlock({ sub }: { sub: SubProject }) {
+  const githubHref = sub.links.find((link) => link.label === 'Github')?.href;
+
   return (
     <div className="relative mt-6 ml-4 md:ml-6">
       <span aria-hidden="true" className="absolute top-0 -left-4 h-full w-px bg-black/25 md:-left-6" />
@@ -12,7 +15,7 @@ export function SubProjectBlock({ sub }: { sub: SubProject }) {
         <div className="flex flex-wrap items-center gap-2">
           <span
             className={cn(
-              'inline-flex items-center gap-1 bg-black px-1.5 py-0.5 font-mono text-[10px] tracking-[0.24em] text-accent',
+              'inline-flex items-center gap-1 bg-black px-1.5 py-0.5 font-jetbrains-mono text-[10px] tracking-[0.24em] text-accent',
             )}>
             <svg
               viewBox="0 0 24 24"
@@ -26,31 +29,47 @@ export function SubProjectBlock({ sub }: { sub: SubProject }) {
             </svg>
             SUB-PROJECT
           </span>
-          <span className="font-mono text-[11px] tracking-[0.14em] text-black/55">{sub.parentLabel}</span>
+          <span className="font-jetbrains-mono text-[11px] tracking-[0.14em] text-black/55">{sub.parentLabel}</span>
         </div>
 
         <div className="mt-3 flex items-baseline gap-3">
           <h4 className="text-[18px] font-semibold tracking-tight md:text-[20px]">{sub.name}</h4>
-          <span className="font-mono text-[11px] text-black/50">{sub.meta}</span>
+          <span className="font-jetbrains-mono text-[11px] text-black/50">{sub.meta}</span>
         </div>
 
         <p className="mt-2 text-[13px] leading-[1.7] text-black/70 md:text-[14px]">{sub.description}</p>
 
         <div className="mt-4 flex flex-wrap gap-2 font-semibold">
-          {sub.links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target={link.href.startsWith('http') ? '_blank' : undefined}
-              rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-              className={cn(
-                'inline-flex cursor-pointer items-center gap-1.5 border border-black px-3 py-2 text-[12px]',
-                'hover:bg-accent md:text-[13px]',
-              )}>
-              {link.icon ? <span aria-hidden="true">{link.icon}</span> : null}
-              {link.label}
-            </a>
-          ))}
+          {sub.links.map((link) => {
+            const linkClassName = cn(
+              'inline-flex cursor-pointer items-center gap-1.5 border border-black px-3 py-2 text-[12px]',
+              'hover:bg-accent md:text-[13px]',
+            );
+
+            if (link.label === 'README') {
+              return (
+                <ReadmeButton
+                  key={link.label}
+                  githubHref={githubHref}
+                  className={linkClassName}
+                  icon={link.icon}
+                  label={link.label}
+                />
+              );
+            }
+
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                target={link.href.startsWith('http') ? '_blank' : undefined}
+                rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                className={linkClassName}>
+                {link.icon ? <span aria-hidden="true">{link.icon}</span> : null}
+                {link.label}
+              </a>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -23,7 +23,7 @@ export default function Contact() {
       <div className={cn('relative z-10 mx-auto flex min-h-[calc(100dvh-8rem)] w-full max-w-[1400px] flex-col')}>
         <div
           className={cn(
-            'mb-6 flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] text-white/55 md:text-[12px]',
+            'mb-6 flex items-center gap-3 font-jetbrains-mono text-[11px] tracking-[0.24em] text-white/55 md:text-[12px]',
           )}>
           <span className="h-px w-8 bg-accent" />
           <span>06 · CONTACT</span>
@@ -52,7 +52,7 @@ export default function Contact() {
           <div
             className={cn(
               'flex flex-col gap-3 border-t border-white/10 pt-6',
-              'font-mono text-[11px] tracking-[0.08em] text-white/45',
+              'font-jetbrains-mono text-[11px] tracking-[0.08em] text-white/45',
               'md:flex-row md:items-center md:justify-between md:text-[12px]',
             )}>
             <span>© 2026 YUN DONGJU — ALL RIGHTS RESERVED</span>

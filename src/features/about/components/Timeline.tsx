@@ -13,7 +13,7 @@ export function Timeline() {
     <div className="mt-20 md:mt-28">
       <div
         className={cn(
-          'mb-6 flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] text-black/50 md:text-[12px]',
+          'mb-6 flex items-center gap-3 font-jetbrains-mono text-[11px] tracking-[0.24em] text-black/50 md:text-[12px]',
         )}>
         <span className="h-px w-8 bg-black" />
         <span>TIMELINE</span>
@@ -27,7 +27,7 @@ export function Timeline() {
               className={cn('absolute top-1.5 -left-[7px] h-3 w-3 ring-4 ring-white', DOT_BY_TONE[item.tone])}
             />
             <div className="flex flex-wrap items-baseline gap-3">
-              <span className="font-mono text-[11px] tracking-[0.24em] text-black/50">{item.time}</span>
+              <span className="font-jetbrains-mono text-[11px] tracking-[0.24em] text-black/50">{item.time}</span>
               <h4 className="text-[17px] font-semibold md:text-[19px]">{item.title}</h4>
             </div>
             <p className="mt-2 text-[14px] leading-[1.8] text-black/65 md:text-[15px]">{item.description}</p>

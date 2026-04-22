@@ -62,7 +62,7 @@ export function TechStack() {
     <div className={cn('mt-12 md:mt-16')}>
       <div
         className={cn(
-          'mb-4 flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] text-black/55 md:text-[12px]',
+          'mb-4 flex items-center gap-3 font-jetbrains-mono text-[11px] tracking-[0.24em] text-black/55 md:text-[12px]',
         )}>
         <span className="h-px w-8 bg-black" />
         <span>02 · TECH STACK</span>

@@ -23,7 +23,7 @@ export default function Hero() {
       <div
         className={cn(
           'absolute top-0 right-0 left-0 z-10 flex items-center justify-between px-6 pt-6',
-          'font-mono text-[11px] tracking-[0.08em] text-black/55',
+          'font-jetbrains-mono text-[11px] tracking-[0.08em] text-black/55',
           'md:px-10 md:pt-7 md:text-[12px]',
         )}>
         <span>YDJ — PORTFOLIO / 2026</span>
@@ -37,7 +37,7 @@ export default function Hero() {
         )}>
         <div
           className={cn(
-            'mb-6 flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] text-black/55 md:text-[12px]',
+            'mb-6 flex items-center gap-3 font-jetbrains-mono text-[11px] tracking-[0.24em] text-black/55 md:text-[12px]',
           )}>
           <span className="h-px w-8 bg-black" />
           <span>01 · HOME</span>

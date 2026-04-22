@@ -77,22 +77,22 @@ export function ContactForm() {
 
       <div className="grid gap-5 md:grid-cols-2">
         <label className="flex flex-col gap-2">
-          <span className="font-mono text-[10px] tracking-[0.24em] text-white/50">NAME</span>
-          <input name="name" type="text" required placeholder="홍길동" className={inputCls} />
+          <span className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-white/50">NAME</span>
+          <input name="name" type="text" required placeholder="이름" className={inputCls} />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="font-mono text-[10px] tracking-[0.24em] text-white/50">EMAIL</span>
+          <span className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-white/50">EMAIL</span>
           <input name="email" type="email" required placeholder="you@domain.com" className={inputCls} />
         </label>
       </div>
 
       <label className="flex flex-col gap-2">
-        <span className="font-mono text-[10px] tracking-[0.24em] text-white/50">SUBJECT</span>
-        <input name="subject" type="text" placeholder="프로젝트 협업 제안" className={inputCls} />
+        <span className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-white/50">SUBJECT</span>
+        <input name="subject" type="text" placeholder="제목" className={inputCls} />
       </label>
 
       <label className="flex flex-col gap-2">
-        <span className="font-mono text-[10px] tracking-[0.24em] text-white/50">MESSAGE</span>
+        <span className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-white/50">MESSAGE</span>
         <textarea
           name="message"
           rows={6}
@@ -121,7 +121,7 @@ export function ContactForm() {
           role="status"
           aria-live="polite"
           className={cn(
-            'font-mono text-[11px] tracking-[0.14em]',
+            'font-jetbrains-mono text-[11px] tracking-[0.14em]',
             status.tone === 'error' && 'text-[#ffb4b4]',
             status.tone === 'success' && 'text-accent',
             (status.tone === 'idle' || status.tone === 'info') && 'text-white/50',
@@ -130,7 +130,7 @@ export function ContactForm() {
         </span>
       </div>
 
-      <p className="font-mono text-[11px] leading-[1.7] text-white/40">
+      <p className="font-jetbrains-mono text-[11px] leading-[1.7] text-white/40">
         전송 버튼을 누르면 입력한 내용이 포트폴리오 문의 메일로 전송됩니다.
       </p>
     </form>
