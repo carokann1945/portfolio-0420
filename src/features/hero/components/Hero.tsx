@@ -1,6 +1,7 @@
 import { cn } from '@/shared/style/utils';
 
 import { HeroLinks } from './HeroLinks';
+import { HeroStatus } from './HeroStatus';
 import { TechStack } from './TechStack';
 
 export default function Hero() {
@@ -59,13 +60,7 @@ export default function Hero() {
           <span> 엔지니어</span>
         </h2>
 
-        <div className="mt-8 font-medium text-black/75" style={{ fontSize: 'clamp(16px, 2.2vw, 28px)' }}>
-          상태 : 신입
-          <span
-            aria-hidden="true"
-            className="ml-2 inline-block h-[0.9em] w-[3px] animate-pulse bg-black align-middle"
-          />
-        </div>
+        <HeroStatus />
 
         <TechStack />
         <HeroLinks />

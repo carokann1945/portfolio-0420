@@ -26,7 +26,7 @@ export default function IntroLoader() {
   const [progress, setProgress] = useState(0);
   const [phase, setPhase] = useState<Phase>('loading');
   const [progressCompleted, setProgressCompleted] = useState(false);
-  const { isReady, isTimedOut, pendingCount, totalCount } = useIntroLoading();
+  const { isReady, isTimedOut, markIntroExited, pendingCount, totalCount } = useIntroLoading();
   const shouldReduceMotion = useReducedMotion();
   const startedAtRef = useRef<number | null>(null);
   const progressRef = useRef(0);
@@ -141,8 +141,9 @@ export default function IntroLoader() {
   useEffect(() => {
     if (phase === 'done') {
       document.body.style.overflow = previousOverflow.current;
+      markIntroExited();
     }
-  }, [phase]);
+  }, [markIntroExited, phase]);
 
   if (phase === 'done') return null;
 

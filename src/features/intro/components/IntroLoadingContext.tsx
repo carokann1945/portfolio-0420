@@ -12,6 +12,8 @@ type IntroLoadingContextValue = {
   totalCount: number;
   isReady: boolean;
   isTimedOut: boolean;
+  hasIntroExited: boolean;
+  markIntroExited: () => void;
   registerTask: (label?: string) => CompleteIntroTask;
 };
 
@@ -22,6 +24,7 @@ export function IntroLoadingProvider({ children }: { children: ReactNode }) {
   const [totalCount, setTotalCount] = useState(0);
   const [hasMinimumElapsed, setHasMinimumElapsed] = useState(false);
   const [isTimedOut, setIsTimedOut] = useState(false);
+  const [hasIntroExited, setHasIntroExited] = useState(false);
   const acceptingTasksRef = useRef(true);
   const activeTasksRef = useRef(new Set<number>());
   const nextTaskIdRef = useRef(0);
@@ -49,6 +52,10 @@ export function IntroLoadingProvider({ children }: { children: ReactNode }) {
       acceptingTasksRef.current = false;
     }
   }, [isReady]);
+
+  const markIntroExited = useCallback(() => {
+    setHasIntroExited(true);
+  }, []);
 
   const registerTask = useCallback<IntroLoadingContextValue['registerTask']>(() => {
     if (!acceptingTasksRef.current) {
@@ -80,9 +87,11 @@ export function IntroLoadingProvider({ children }: { children: ReactNode }) {
       totalCount,
       isReady,
       isTimedOut,
+      hasIntroExited,
+      markIntroExited,
       registerTask,
     }),
-    [isReady, isTimedOut, pendingCount, registerTask, totalCount],
+    [hasIntroExited, isReady, isTimedOut, markIntroExited, pendingCount, registerTask, totalCount],
   );
 
   return <IntroLoadingContext.Provider value={value}>{children}</IntroLoadingContext.Provider>;
