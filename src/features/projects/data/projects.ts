@@ -29,7 +29,7 @@ export const PROJECTS: Project[] = [
     links: [
       { label: 'README', href: '#', icon: '📝' },
       { label: 'Github', href: 'https://github.com/carokann1945/cernium', icon: '⎇' },
-      { label: 'Live', href: 'https://cernium.app/', icon: '↗' },
+      { label: 'cernium.app', href: 'https://cernium.app/', icon: '↗' },
     ],
     subProject: {
       name: 'gms-tracker',
@@ -53,7 +53,7 @@ export const PROJECTS: Project[] = [
     links: [
       { label: 'README', href: '#', icon: '📝' },
       { label: 'Github', href: 'https://github.com/carokann1945/carokann', icon: '⎇' },
-      { label: 'Live', href: 'https://carokann.app/', icon: '↗' },
+      { label: 'carokann.app', href: 'https://carokann.app/', icon: '↗' },
     ],
   },
 ];

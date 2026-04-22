@@ -27,7 +27,7 @@ export default function Hero() {
           'md:px-10 md:pt-7 md:text-[12px]',
         )}>
         <span>YDJ — PORTFOLIO / 2026</span>
-        <span className="hidden md:inline">FRONTEND ENGINEER · SEOUL</span>
+        <span className="hidden md:inline">FRONTEND ENGINEER</span>
       </div>
 
       <div
@@ -40,7 +40,7 @@ export default function Hero() {
             'mb-6 flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] text-black/55 md:text-[12px]',
           )}>
           <span className="h-px w-8 bg-black" />
-          <span>01 · HELLO</span>
+          <span>01 · HOME</span>
         </div>
 
         <h1
@@ -56,14 +56,14 @@ export default function Hero() {
             프론트엔드
             <span aria-hidden="true" className="absolute inset-x-0 bottom-[0.1em] -z-10 h-[0.35em] bg-accent" />
           </span>
-          <span> 개발자.</span>
+          <span> 엔지니어</span>
         </h2>
 
         <div className="mt-8 font-medium text-black/75" style={{ fontSize: 'clamp(16px, 2.2vw, 28px)' }}>
-          신입 프론트엔드 개발자
+          상태 : 신입
           <span
             aria-hidden="true"
-            className="ml-2 inline-block h-[0.9em] w-[3px] animate-pulse bg-accent align-middle"
+            className="ml-2 inline-block h-[0.9em] w-[3px] animate-pulse bg-black align-middle"
           />
         </div>
 

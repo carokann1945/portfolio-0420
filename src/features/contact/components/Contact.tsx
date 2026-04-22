@@ -32,15 +32,15 @@ export default function Contact() {
         <h2
           className="font-semibold tracking-[-0.03em]"
           style={{ fontSize: 'clamp(44px, 9vw, 140px)', lineHeight: 0.9 }}>
-          <span className="block">이야기를</span>
+          <span className="block">언제든</span>
           <span className="block">
-            <span className="text-accent">시작해볼까요</span>
+            <span className="text-accent">연락주세요</span>
             <span className="text-white">.</span>
           </span>
         </h2>
 
         <p className="mt-8 max-w-2xl text-[15px] leading-[1.9] text-white/70 md:text-[17px]">
-          새로운 프로젝트, 협업 제안, 또는 가벼운 안부까지 — 아래 폼으로 바로 메일을 보낼 수 있어요.
+          취업 제안, 프로젝트 협업 제안, 또는 가벼운 안부까지 — 아래 폼으로 바로 메일을 보낼 수 있어요.
         </p>
 
         <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-[1.2fr_1fr] md:gap-14">
@@ -55,7 +55,7 @@ export default function Contact() {
               'font-mono text-[11px] tracking-[0.08em] text-white/45',
               'md:flex-row md:items-center md:justify-between md:text-[12px]',
             )}>
-            <span>© 2026 YOON DONG JU — ALL RIGHTS RESERVED</span>
+            <span>© 2026 YUN DONGJU — ALL RIGHTS RESERVED</span>
             <span>YDJ / PORTFOLIO / 2026</span>
           </div>
         </div>

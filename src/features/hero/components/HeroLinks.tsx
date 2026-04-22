@@ -23,8 +23,8 @@ const LINKS: HeroLink[] = [
   {
     key: 'notion',
     label: 'NOTION',
-    value: 'notion.so',
-    href: 'https://www.notion.so/',
+    value: 'Dev Notes',
+    href: 'https://aquatic-settee-ba6.notion.site/Dev-Notes-1c12f210da34802bb0aae7ae0f96fded',
     icon: (
       <svg
         viewBox="0 0 24 24"
