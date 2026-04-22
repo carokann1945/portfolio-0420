@@ -28,7 +28,7 @@ export const PROJECTS: Project[] = [
     index: '01',
     name: 'Cernium',
     description:
-      'Cernium은 영어 및 해외 시간대(UTC, PDT) 기반 GMS(글로벌 메이플스토리) 공지의 낮은 접근성과, 이벤트 정보가 분산된 문제를 해결하기 위해 제작했습니다. 2026년 4월부터 개발 중이며 DAU 100명 규모로 운영되고 있습니다. Next.js와 Typescript 기반으로 제작되었으며 데이터 수집을 위한 서브 프로젝트는 Node.js 기반으로 제작되었습니다.',
+      'Cernium은 영어 및 해외 시간대(UTC, PDT) 기반 GMS(글로벌 메이플스토리) 공지의 낮은 접근성과, 이벤트 정보가 분산된 문제를 해결하기 위해 제작했습니다. 2026년 4월부터 개발 중이며 DAU 50명 규모로 운영되고 있습니다. Next.js와 Typescript 기반으로 제작되었으며 데이터 수집을 위한 서브 프로젝트는 Node.js 기반으로 제작되었습니다.',
     tags: ['Next.js', 'TypeScript', 'Node.js', 'Tailwind'],
     image: { src: cerniumDesktop, alt: 'Cernium preview' },
     links: [
