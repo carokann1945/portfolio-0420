@@ -15,7 +15,7 @@ export function SubProjectBlock({ sub }: { sub: SubProject }) {
         <div className="flex flex-wrap items-center gap-2">
           <span
             className={cn(
-              'inline-flex items-center gap-1 bg-black px-1.5 py-0.5 font-jetbrains-mono text-[10px] tracking-[0.24em] text-accent',
+              'inline-flex items-center gap-1 px-1.5 py-0.5 font-jetbrains-mono text-[10px] tracking-[0.24em] text-accent',
             )}>
             <svg
               viewBox="0 0 24 24"
