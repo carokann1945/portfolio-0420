@@ -12,7 +12,7 @@ const LINKS: HeroLink[] = [
   {
     key: 'github',
     label: 'GITHUB',
-    value: 'github.com/carokann1945',
+    value: 'carokann1945',
     href: 'https://github.com/carokann1945',
     icon: (
       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
@@ -22,7 +22,7 @@ const LINKS: HeroLink[] = [
   },
   {
     key: 'notion',
-    label: 'NOTION',
+    label: '지식 저장고',
     value: 'Dev Notes',
     href: 'https://aquatic-settee-ba6.notion.site/Dev-Notes-1c12f210da34802bb0aae7ae0f96fded',
     icon: (
@@ -68,15 +68,17 @@ export function HeroLinks() {
                   {link.icon}
                 </span>
                 <div className="flex flex-col gap-1">
-                  <span className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-black/50 md:text-[11px]">
+                  <span className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-black/60 group-hover:text-gray-200 md:text-[11px]">
                     {link.label}
                   </span>
-                  <span className="text-[17px] font-semibold tracking-tight md:text-[19px]">{link.value}</span>
+                  <span className="text-[17px] font-semibold tracking-tight group-hover:text-white md:text-[19px]">
+                    {link.value}
+                  </span>
                 </div>
               </div>
               <span
                 className={cn(
-                  'font-jetbrains-mono text-[18px] text-black/40 transition-transform group-hover:translate-x-1 group-hover:text-black',
+                  'font-jetbrains-mono text-[18px] text-black/40 transition-transform group-hover:translate-x-1 group-hover:text-white',
                 )}
                 aria-hidden="true">
                 ↗

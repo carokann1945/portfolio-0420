@@ -27,8 +27,8 @@ export default function Hero() {
           'font-jetbrains-mono text-[11px] tracking-[0.08em] text-black/55',
           'md:px-10 md:pt-7 md:text-[12px]',
         )}>
-        <span>YDJ — PORTFOLIO / 2026</span>
-        <span className="hidden md:inline">FRONTEND ENGINEER</span>
+        <span>YDJ — PORTFOLIO</span>
+        <span className="hidden md:inline">Last update : 2026.04.24</span>
       </div>
 
       <div

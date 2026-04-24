@@ -17,7 +17,7 @@ export function Strengths() {
         {STRENGTHS.map((strength) => (
           <li key={strength.id} className="flex flex-col gap-3 bg-white p-6 md:p-8">
             <span className="font-jetbrains-mono text-[10px] tracking-[0.24em]">
-              <span className="inline-block bg-accent px-1.5 py-0.5 text-black">{strength.id}</span>
+              <span className="inline-block bg-accent px-1.5 py-0.5 text-white">{strength.id}</span>
             </span>
             <h3 className="text-[20px] font-semibold tracking-tight md:text-[22px]">{strength.title}</h3>
             <p className="text-[14px] leading-[1.8] text-black/70 md:text-[15px]">{strength.description}</p>

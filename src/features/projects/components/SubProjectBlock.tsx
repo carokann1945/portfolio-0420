@@ -43,7 +43,7 @@ export function SubProjectBlock({ sub }: { sub: SubProject }) {
           {sub.links.map((link) => {
             const linkClassName = cn(
               'inline-flex cursor-pointer items-center gap-1.5 border border-black px-3 py-2 text-[12px]',
-              'hover:bg-accent md:text-[13px]',
+              'hover:bg-accent hover:text-white md:text-[13px]',
             );
 
             if (link.label === 'README') {

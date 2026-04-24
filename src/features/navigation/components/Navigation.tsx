@@ -290,15 +290,19 @@ export default function Navigation() {
                       }}
                       className={cn(
                         'group flex min-w-[337px] items-center gap-3 px-4 py-3 text-lg font-semibold transition-colors md:min-w-[530px] md:py-5',
-                        isActive ? 'bg-accent text-black' : 'bg-[#f2f2f2] hover:bg-accent',
+                        isActive ? 'bg-accent text-white' : 'bg-[#f2f2f2] hover:bg-accent',
                       )}>
                       <Icon
                         className={cn(
                           'size-[26px] shrink-0 transition-colors md:size-[36px]',
-                          isActive ? 'text-black' : 'text-gray-400 group-hover:text-black',
+                          isActive ? 'text-white' : 'text-gray-400 group-hover:text-white',
                         )}
                       />
-                      <div className={cn('flex w-full items-center justify-between', 'text-[16px] md:text-[24px]')}>
+                      <div
+                        className={cn(
+                          'flex w-full items-center justify-between',
+                          'text-[16px] group-hover:text-white md:text-[24px]',
+                        )}>
                         <span>| {label}</span>
                         <span>&gt;</span>
                       </div>

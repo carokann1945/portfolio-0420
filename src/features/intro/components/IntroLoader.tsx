@@ -17,7 +17,7 @@ const FADE_MS = 650;
 const YELLOW_HOLD_MS = 300;
 const REDUCED_MOTION_FADE_MS = 180;
 
-const TASKS = ['Home', 'Projects', 'About', 'Contact'];
+const TASKS = ['홈', '프로젝트', '소개', '연락하기'];
 
 const pad2 = (n: number) => String(n).padStart(2, '0');
 const pad3 = (n: number) => String(n).padStart(3, '0');
@@ -233,7 +233,8 @@ export default function IntroLoader() {
 
       {/* Progress bar — pinned to bottom */}
       <motion.div {...uiFade} className={cn('absolute right-7 bottom-7 left-7 z-10')}>
-        <div className={cn('mb-3 flex items-baseline justify-between', 'font-jetbrains-mono text-[12px] text-white/55')}>
+        <div
+          className={cn('mb-3 flex items-baseline justify-between', 'font-jetbrains-mono text-[12px] text-white/55')}>
           <span>LOADING</span>
           <span className={cn('text-[24px] text-white tabular-nums')}>
             <span className={cn('text-accent')}>{pad3(displayProgress)}</span>
@@ -250,7 +251,7 @@ export default function IntroLoader() {
         </div>
       </motion.div>
 
-      {/* Yellow cover: sweeps left → right, then fades */}
+      {/* accent color cover: sweeps left → right, then fades */}
       <motion.div
         className={cn(
           'absolute inset-0 z-30 bg-accent',

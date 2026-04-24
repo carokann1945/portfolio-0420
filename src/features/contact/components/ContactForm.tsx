@@ -111,7 +111,7 @@ export function ContactForm() {
           disabled={isSubmitting}
           aria-busy={isSubmitting}
           className={cn(
-            'inline-flex cursor-pointer items-center gap-2 bg-accent px-5 py-3 text-[14px] font-semibold text-black',
+            'inline-flex cursor-pointer items-center gap-2 bg-accent px-5 py-3 text-[14px] font-semibold text-white',
             'transition-transform hover:-translate-y-0.5 md:text-[15px]',
             'disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0',
           )}>

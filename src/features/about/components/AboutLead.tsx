@@ -30,7 +30,9 @@ export function AboutLead() {
       <dl className="grid grid-cols-2 gap-px self-start border border-black/10 bg-black/10">
         {FACTS.map((fact) => (
           <div key={fact.label} className="flex flex-col gap-1 bg-white p-4 md:p-5">
-            <dt className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-black/50 md:text-[11px]">{fact.label}</dt>
+            <dt className="font-jetbrains-mono text-[10px] tracking-[0.24em] text-black/50 md:text-[11px]">
+              {fact.label}
+            </dt>
             <dd className="text-[15px] font-medium text-black md:text-[16px]">{fact.value}</dd>
           </div>
         ))}

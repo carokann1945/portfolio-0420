@@ -43,7 +43,7 @@ export default function Contact() {
         </h2>
 
         <p className="mt-8 max-w-2xl text-[15px] leading-[1.9] text-white/70 md:text-[17px]">
-          취업 제안, 프로젝트 협업 제안, 또는 가벼운 안부까지 — 아래 폼으로 바로 메일을 보낼 수 있어요.
+          협업이나 채용 관련 문의는 아래 폼으로 편하게 보내주세요.
         </p>
 
         <div className="mt-10 grid gap-10 md:mt-14 md:grid-cols-[1.2fr_1fr] md:gap-14">

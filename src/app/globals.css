@@ -10,10 +10,7 @@
   --color-foreground: var(--foreground);
   --font-pretendard: var(--font-pretendard);
   --font-jetbrains-mono: var(--font-jetbrains-mono);
-  /* 형광 노랑 */
-  /* --color-accent: #e6f700; */
-  /* 파란색 */
-  --color-accent: #007bff;
+  --color-accent: #378add;
   --color-ink: #151718;
 }
 
