@@ -89,7 +89,7 @@ function MarkdownRenderer({ markdown, baseUrl }: MarkdownRendererProps) {
             <h1 className={cn('mt-1 border-b border-gray-400 pb-3 text-2xl font-bold text-gray-800')}>{children}</h1>
           ),
           h2: ({ children }) => <h2 className={cn('mt-4 mb-4 text-xl font-bold')}>{children}</h2>,
-          h3: ({ children }) => <h3 className={cn('font-semiboldmb-2 mt-3 text-base')}>{children}</h3>,
+          h3: ({ children }) => <h3 className={cn('mt-3 mb-2 text-base font-semibold')}>{children}</h3>,
           p: ({ children }) => <p className={cn('mb-3 text-base leading-7')}>{children}</p>,
           a: ({ href, children }) => (
             <a
@@ -147,6 +147,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
   const [fetchState, setFetchState] = useState<FetchState>({ status: 'idle' });
   const hasFetched = useRef(false);
   const previousBodyOverflow = useRef<string | null>(null);
+  const pushedModalHistoryRef = useRef(false);
   const resolvedRepo = repo ?? getRepoFromGithubHref(githubHref);
   const buttonIcon = icon ?? readmeIcon;
 
@@ -181,6 +182,15 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
     fetchReadme();
   };
 
+  const closeModal = useCallback(({ syncHistory }: { syncHistory: boolean }) => {
+    setIsOpen(false);
+
+    if (syncHistory && pushedModalHistoryRef.current) {
+      pushedModalHistoryRef.current = false;
+      window.history.back();
+    }
+  }, []);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -189,12 +199,16 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
     document.body.style.overflow = 'hidden';
 
     // 뒤로가기 감지를 위한 히스토리 엔트리 추가
-    history.pushState({ readmeModal: true }, '');
+    window.history.pushState({ readmeModal: true }, '', window.location.href);
+    pushedModalHistoryRef.current = true;
 
     const handleKeydown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsOpen(false);
+      if (e.key === 'Escape') closeModal({ syncHistory: true });
     };
-    const handlePopstate = () => setIsOpen(false);
+    const handlePopstate = () => {
+      pushedModalHistoryRef.current = false;
+      closeModal({ syncHistory: false });
+    };
 
     window.addEventListener('keydown', handleKeydown);
     window.addEventListener('popstate', handlePopstate);
@@ -205,7 +219,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
       window.removeEventListener('keydown', handleKeydown);
       window.removeEventListener('popstate', handlePopstate);
     };
-  }, [isOpen]);
+  }, [closeModal, isOpen]);
 
   const modal =
     typeof document === 'undefined'
@@ -219,7 +233,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                onClick={() => setIsOpen(false)}
+                onClick={() => closeModal({ syncHistory: true })}
                 className={cn('fixed inset-0 z-[100] h-dvh overflow-y-auto', 'bg-black/30 backdrop-blur-sm')}>
                 <div className={cn('flex min-h-dvh items-start justify-center', 'px-4 py-8')}>
                   <motion.div
@@ -245,7 +259,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
                       )}>
                       <span className={cn('font-semibold text-white')}>README.md</span>
                       <button
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => closeModal({ syncHistory: true })}
                         aria-label="Close README"
                         className={cn(
                           'flex items-center justify-center',
