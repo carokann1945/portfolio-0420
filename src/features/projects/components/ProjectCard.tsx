@@ -91,7 +91,6 @@ export function ProjectCard({ project }: { project: Project }) {
             sizes="(min-width: 768px) 60vw, 100vw"
           />
         </figure>
-        <div className="absolute -top-2 -left-2 hidden h-6 w-6 bg-accent md:block" aria-hidden="true" />
       </div>
     </article>
   );
