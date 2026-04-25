@@ -1,10 +1,16 @@
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 
 import { cn } from '@/shared/style/utils';
 
 import type { Project } from '../data/projects';
 import { ReadmeButton } from './ReadmeModal';
 import { SubProjectBlock } from './SubProjectBlock';
+
+function LinkIcon({ icon }: { icon: string | StaticImageData }) {
+  if (typeof icon === 'string') return <span aria-hidden="true">{icon}</span>;
+
+  return <Image src={icon} alt="" width={16} height={16} className="h-4 w-4 object-contain" unoptimized />;
+}
 
 export function ProjectCard({ project }: { project: Project }) {
   const githubHref = project.links.find((link) => link.label === 'Github')?.href;
@@ -21,7 +27,8 @@ export function ProjectCard({ project }: { project: Project }) {
           style={{ fontSize: 'clamp(32px, 4.5vw, 56px)', lineHeight: 1 }}>
           {project.name}
         </h3>
-        <p className="mt-5 text-[15px] leading-[1.8] text-black/75 md:text-[16px] md:leading-[1.9]">
+        <span className="mt-3 text-sm text-gray-500">{project.period}</span>
+        <p className="mt-3 text-[15px] leading-[1.8] text-black/75 md:text-[16px] md:leading-[1.9]">
           {project.description}
         </p>
 
@@ -64,7 +71,7 @@ export function ProjectCard({ project }: { project: Project }) {
                 target={link.href.startsWith('http') ? '_blank' : undefined}
                 rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 className={linkClassName}>
-                {link.icon ? <span aria-hidden="true">{link.icon}</span> : null}
+                {link.icon ? <LinkIcon icon={link.icon} /> : null}
                 {link.label}
               </a>
             );

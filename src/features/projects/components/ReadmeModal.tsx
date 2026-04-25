@@ -2,12 +2,14 @@
 
 import { X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkGfm from 'remark-gfm';
+
+import readmeIcon from '@/shared/assets/images/readme.svg';
 
 import { cn } from '../../../shared/style/utils';
 
@@ -28,7 +30,7 @@ interface ReadmeButtonProps {
   repo?: string;
   githubHref?: string;
   className?: string;
-  icon?: string;
+  icon?: string | StaticImageData;
   label?: string;
 }
 
@@ -56,6 +58,12 @@ function getRepoFromGithubHref(githubHref?: string) {
   } catch {
     return null;
   }
+}
+
+function ButtonIcon({ icon }: { icon: string | StaticImageData }) {
+  if (typeof icon === 'string') return <span aria-hidden="true">{icon}</span>;
+
+  return <Image src={icon} alt="" width={16} height={16} className="h-4 w-4 object-contain" unoptimized />;
 }
 
 function MarkdownRenderer({ markdown, baseUrl }: MarkdownRendererProps) {
@@ -140,6 +148,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
   const hasFetched = useRef(false);
   const previousBodyOverflow = useRef<string | null>(null);
   const resolvedRepo = repo ?? getRepoFromGithubHref(githubHref);
+  const buttonIcon = icon ?? readmeIcon;
 
   const fetchReadme = useCallback(async () => {
     if (hasFetched.current) return;
@@ -273,7 +282,7 @@ export function ReadmeButton({ repo, githubHref, className, icon, label = 'READM
         type="button"
         onClick={handleOpen}
         className={cn('flex items-center justify-center gap-[4px]', className)}>
-        {icon ? <span aria-hidden="true">{icon}</span> : <Image src="/images/note.svg" alt="" width={18} height={18} />}
+        <ButtonIcon icon={buttonIcon} />
         <span>{label}</span>
       </button>
       {modal}

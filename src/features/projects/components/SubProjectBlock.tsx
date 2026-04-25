@@ -1,7 +1,15 @@
+import Image, { type StaticImageData } from 'next/image';
+
 import { cn } from '@/shared/style/utils';
 
 import type { SubProject } from '../data/projects';
 import { ReadmeButton } from './ReadmeModal';
+
+function LinkIcon({ icon }: { icon: string | StaticImageData }) {
+  if (typeof icon === 'string') return <span aria-hidden="true">{icon}</span>;
+
+  return <Image src={icon} alt="" width={16} height={16} className="h-4 w-4 object-contain" unoptimized />;
+}
 
 export function SubProjectBlock({ sub }: { sub: SubProject }) {
   const githubHref = sub.links.find((link) => link.label === 'Github')?.href;
@@ -65,7 +73,7 @@ export function SubProjectBlock({ sub }: { sub: SubProject }) {
                 target={link.href.startsWith('http') ? '_blank' : undefined}
                 rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 className={linkClassName}>
-                {link.icon ? <span aria-hidden="true">{link.icon}</span> : null}
+                {link.icon ? <LinkIcon icon={link.icon} /> : null}
                 {link.label}
               </a>
             );
