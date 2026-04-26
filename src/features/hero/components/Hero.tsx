@@ -57,7 +57,7 @@ export default function Hero() {
             프론트엔드
             <span aria-hidden="true" className="absolute inset-x-0 bottom-[0.1em] -z-10 h-[0.35em] bg-accent" />
           </span>
-          <span> 엔지니어</span>
+          <span> 개발자</span>
         </h2>
 
         <HeroStatus />
