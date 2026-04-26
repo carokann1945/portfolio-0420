@@ -1,5 +1,6 @@
 import './globals.css';
 
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { JetBrains_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
@@ -43,6 +44,7 @@ export default function RootLayout({
           {children}
         </IntroLoadingProvider>
       </body>
+      <Analytics />
     </html>
   );
 }
